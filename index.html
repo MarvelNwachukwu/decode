@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0f0f0f" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="robots" content="noindex" />
+
+    <title>Decode</title>
+
+    <link rel="manifest" href="./manifest.json" />
+    <link rel="icon" href="./icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/icon.svg" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hdr">
+        <h1 id="appName">Decode</h1>
+        <button id="modeToggle" type="button" class="mode-toggle" aria-label="Switch mode">
+          <span class="mode-opt" data-mode="encrypt">Encrypt</span>
+          <span class="mode-sep" aria-hidden="true">·</span>
+          <span class="mode-opt" data-mode="decrypt">Decrypt</span>
+        </button>
+      </header>
+
+      <section class="card">
+        <label class="lbl" for="input">Message</label>
+        <textarea
+          id="input"
+          rows="6"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+          placeholder="Paste ciphertext to decrypt, or type a message to encrypt."
+        ></textarea>
+
+        <label class="lbl" for="key">Key</label>
+        <div class="key-row">
+          <input
+            id="key"
+            type="password"
+            spellcheck="false"
+            autocomplete="off"
+            autocapitalize="off"
+            placeholder="Your shared key"
+          />
+          <button id="toggleKey" type="button" class="ghost" aria-pressed="false">Show</button>
+        </div>
+
+        <button id="action" type="button" class="primary">Encrypt</button>
+
+        <p id="status" class="status" data-kind="info" role="status" aria-live="polite"></p>
+
+        <div id="output" class="output" hidden>
+          <label class="lbl" for="outputText">Result</label>
+          <textarea id="outputText" rows="6" readonly spellcheck="false"></textarea>
+          <div class="row">
+            <button id="copy" type="button" class="primary">Copy</button>
+            <button id="clear" type="button" class="ghost">Clear</button>
+          </div>
+        </div>
+      </section>
+
+      <footer class="ftr">
+        <span>AES-256-GCM · PBKDF2-SHA256 · in-browser only</span>
+        <button id="settingsBtn" type="button" class="link-btn" aria-haspopup="dialog" aria-controls="settings">Settings</button>
+      </footer>
+    </main>
+
+    <div
+      id="settings"
+      class="modal"
+      hidden
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settingsTitle"
+    >
+      <div class="modal-backdrop" data-close></div>
+      <div class="modal-panel">
+        <header class="modal-hdr">
+          <h2 id="settingsTitle">Settings</h2>
+          <button type="button" class="ghost" data-close>Close</button>
+        </header>
+
+        <form id="settingsForm" class="modal-body">
+          <fieldset class="form-section">
+            <legend>Identity</legend>
+
+            <label class="lbl" for="cfgName">App name</label>
+            <input
+              id="cfgName"
+              name="appName"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Decode"
+            />
+
+            <label class="lbl">Icon</label>
+            <div class="icon-row">
+              <img
+                id="iconPreview"
+                class="icon-preview"
+                alt="Icon preview"
+                src="./icons/icon.svg"
+              />
+              <div class="icon-row-actions">
+                <button type="button" id="iconPickBtn" class="ghost">Choose…</button>
+                <button type="button" id="iconClearBtn" class="ghost">Clear</button>
+              </div>
+            </div>
+            <input
+              id="iconFile"
+              type="file"
+              accept="image/png,image/svg+xml,image/jpeg,image/webp"
+              hidden
+            />
+            <p class="hint">PNG, JPG, SVG, or WebP — max 256 KB.</p>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Theme</legend>
+            <div class="color-grid">
+              <div>
+                <label class="lbl" for="cfgTheme">Theme color</label>
+                <input id="cfgTheme" name="themeColor" type="color" />
+              </div>
+              <div>
+                <label class="lbl" for="cfgBg">Background</label>
+                <input id="cfgBg" name="backgroundColor" type="color" />
+              </div>
+            </div>
+            <p class="hint">
+              Theme color tints the focus highlight on inputs and the title
+              bar of the installed PWA.
+            </p>
+          </fieldset>
+
+          <p class="status" id="settingsStatus" data-kind="info" role="status" aria-live="polite"></p>
+
+          <div class="modal-actions">
+            <button type="submit" class="primary">Save</button>
+            <button type="button" id="resetBtn" class="ghost">Reset to defaults</button>
+          </div>
+
+          <p class="hint hint-muted">
+            Personalisation stays on this device. To change defaults for everyone,
+            edit <code>config.js</code> and redeploy.
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

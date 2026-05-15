@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Decode">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1a1a1a"/>
+      <stop offset="1" stop-color="#0a0a0a"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
+  <g fill="#ededed">
+    <!-- Stylised "D" — a flat left edge with a quarter-arc right side -->
+    <path d="
+      M 152 128
+      L 232 128
+      C 332 128 396 184 396 256
+      C 396 328 332 384 232 384
+      L 152 384
+      Z
+      M 200 176
+      L 200 336
+      L 232 336
+      C 304 336 348 304 348 256
+      C 348 208 304 176 232 176
+      Z
+    "/>
+    <!-- Cipher dots — a small horizontal accent below the glyph -->
+    <circle cx="180" cy="420" r="8"/>
+    <circle cx="210" cy="420" r="8" fill-opacity="0.6"/>
+    <circle cx="240" cy="420" r="8" fill-opacity="0.35"/>
+  </g>
+</svg>
