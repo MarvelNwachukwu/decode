@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Decode",
   "short_name": "Decode",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Right-click any selected text to encrypt or decrypt it with a shared key. Same crypto as the Decode web app.",
   "icons": {
     "16": "icons/icon.svg",
