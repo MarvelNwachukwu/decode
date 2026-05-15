@@ -35,7 +35,17 @@ in notes/calculator/etc. form, gated by a secret unlock) is deferred to v2.
 A separate companion Chrome browser extension (distinct from "chrome" in the
 UI sense). Lets users right-click a text selection on any webpage and pick
 "Encrypt with Decode" or "Decrypt with Decode". Prompts for the key and
-returns the result. Same crypto primitives as the web app.
+returns the result.
+
+## Non-goals
+
+**Third-party LLM integration** (Claude skill, GPT plugin, MCP server hosted
+by a model vendor, etc.). Anything that puts the key or plaintext into a
+remote provider's request stream defeats the zero-trust principle, even
+when the workflow would be convenient. Considered and rejected in 2026-05 on
+the explicit grounds that the key would land in chat history and on a third
+party's servers. The mobile-workflow problem stays solved by Decode-the-PWA,
+not by routing through a model. Same crypto primitives as the web app.
 
 ### Mode
 
