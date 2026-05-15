@@ -1,4 +1,4 @@
-# Decode — Context
+# Decode: Context
 
 A client-side PWA for symmetric encrypt/decrypt of messages between two parties.
 No backend, no storage of message data or keys. Everything happens in the browser.
@@ -26,15 +26,15 @@ Blob-URL manifest) on every load **before** "Add to Home Screen" is invoked.
 
 Scope today is **launcher disguise only**: home-screen and "Add to Home
 Screen" identity (name, icon, theme colors) is configurable per-device via the
-Settings UI. The in-app UI is unchanged — opening the disguised app still
-shows the regular Decode interface. **Full camouflage** — a credible fake app
-(notes/calculator/etc.) gated by a secret unlock — is deferred to v2.
+Settings UI. The in-app UI is unchanged: opening the disguised app still
+shows the regular Decode interface. **Full camouflage** (a credible fake app
+in notes/calculator/etc. form, gated by a secret unlock) is deferred to v2.
 
 ### Chrome extension
 
 A separate companion Chrome browser extension (distinct from "chrome" in the
 UI sense). Lets users right-click a text selection on any webpage and pick
-"Encrypt with Decode" or "Decrypt with Decode" — prompts for the key and
+"Encrypt with Decode" or "Decrypt with Decode". Prompts for the key and
 returns the result. Same crypto primitives as the web app.
 
 ### Mode

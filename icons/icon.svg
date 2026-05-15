@@ -7,7 +7,7 @@
   </defs>
   <rect width="512" height="512" rx="112" ry="112" fill="url(#bg)"/>
   <g fill="#ededed">
-    <!-- Stylised "D" — a flat left edge with a quarter-arc right side -->
+    <!-- Stylised "D" with a flat left edge and a quarter-arc right side -->
     <path d="
       M 152 128
       L 232 128
@@ -22,7 +22,7 @@
       C 348 208 304 176 232 176
       Z
     "/>
-    <!-- Cipher dots — a small horizontal accent below the glyph -->
+    <!-- Cipher dots: a small horizontal accent below the glyph -->
     <circle cx="180" cy="420" r="8"/>
     <circle cx="210" cy="420" r="8" fill-opacity="0.6"/>
     <circle cx="240" cy="420" r="8" fill-opacity="0.35"/>

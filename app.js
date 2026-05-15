@@ -140,7 +140,7 @@ function wire() {
 
 function registerServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
-  // Don't await — fire and forget.
+  // Don't await; fire and forget.
   navigator.serviceWorker.register("./sw.js").catch(() => {});
 }
 

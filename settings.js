@@ -24,7 +24,7 @@ const els = {
   reset: $("resetBtn"),
 };
 
-// Working draft — populated on open, mutated by user input, written on Save.
+// Working draft: populated on open, mutated by user input, written on Save.
 // We don't write straight to localStorage on every keystroke so Reset/Close
 // without Save discards changes cleanly.
 let draftIconDataUrl = null;

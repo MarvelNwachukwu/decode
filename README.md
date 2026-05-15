@@ -1,14 +1,14 @@
 # Decode
 
 Send a private message that only the right person can read. Decode scrambles
-your text using a secret key you and your recipient agree on — no servers,
+your text using a secret key you and your recipient agree on. No servers,
 no accounts, no apps to install.
 
 ## How it works
 
-Pick a key — any word or phrase you and the other person agree on. Type your
+Pick a key, any word or phrase you and the other person agree on. Type your
 message, hit **Encrypt**, and Decode turns it into a long unreadable string.
-Send that string anywhere you like — a text message, an email, a sticky
+Send that string anywhere you like: a text message, an email, a sticky
 note. On the other end, the same key unscrambles it back to the original.
 
 If the key is wrong, the message just doesn't open. There's no peek, no
@@ -16,8 +16,8 @@ preview, no "almost right".
 
 ## Where to use it
 
-- **Web app:** [decode-orcin.vercel.app](https://decode-orcin.vercel.app/) —
-  works on phone, laptop, anywhere. Tap "Add to Home Screen" and it feels
+- **Web app:** [decode-orcin.vercel.app](https://decode-orcin.vercel.app/).
+  Works on phone, laptop, anywhere. Tap "Add to Home Screen" and it feels
   like a regular app.
 - **Chrome extension:** select text on any website, right-click, and pick
   *Encrypt with Decode* or *Decrypt with Decode*. Download it from the link

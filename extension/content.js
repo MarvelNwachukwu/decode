@@ -1,4 +1,4 @@
-// Decode extension — content script.
+// Decode extension: content script.
 // Receives "decode:request" messages from the background SW (sent in response
 // to a context-menu click), shows an in-page modal to collect the key, and
 // then either:
@@ -55,7 +55,7 @@
         target.el.focus();
         target.el.setSelectionRange(target.start, target.end);
         if (document.execCommand("insertText", false, text)) return true;
-        // Direct fallback — dispatch input event so framework state updates.
+        // Direct fallback: dispatch input event so framework state updates.
         const val = target.el.value;
         target.el.value = val.slice(0, target.start) + text + val.slice(target.end);
         const caret = target.start + text.length;
@@ -246,7 +246,7 @@
 
   // ----- Main flow ----------------------------------------------------------
   async function handleRequest(op, text) {
-    if (!text) return; // shouldn't happen — context menu requires selection
+    if (!text) return; // shouldn't happen; context menu requires selection
 
     const target = captureTarget();
     showModal();
@@ -300,11 +300,11 @@
       const copied = await copyToClipboard(response.result);
       const msg = replaced
         ? copied
-          ? "Encrypted — replaced selection, also copied."
-          : "Encrypted — replaced selection."
+          ? "Encrypted: replaced selection, also copied."
+          : "Encrypted: replaced selection."
         : copied
-          ? "Encrypted — copied to clipboard."
-          : "Encrypted — couldn't replace or copy. Result lost.";
+          ? "Encrypted: copied to clipboard."
+          : "Encrypted: couldn't replace or copy. Result lost.";
       showToast(msg);
     }
   }

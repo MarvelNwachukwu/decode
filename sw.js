@@ -1,6 +1,6 @@
 // Service worker: cache-first app shell.
 // Bump CACHE on every shell change so clients pull the new version.
-const CACHE = "decode-v6";
+const CACHE = "decode-v7";
 
 const ASSETS = [
   "./",

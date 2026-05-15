@@ -1,4 +1,4 @@
-// Decode extension — background service worker.
+// Decode extension: background service worker.
 // Registers the two context menu items, dispatches to the content script in
 // the active tab, and handles crypto requests on its behalf (the SW is the
 // only place we have ES-module imports, so crypto.js lives here).

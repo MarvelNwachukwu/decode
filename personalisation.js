@@ -21,7 +21,7 @@ export function getPersonalisation() {
 }
 
 // Effective config = deployment defaults from config.js overlaid by
-// localStorage personalisation. Pure — no DOM side-effects.
+// localStorage personalisation. Pure; no DOM side-effects.
 export function getEffective() {
   const p = getPersonalisation();
   const appName = p.appName || config.appName;
@@ -122,7 +122,7 @@ export function applyPersonalisation() {
   const h = document.getElementById("appName");
   if (h) h.textContent = eff.appName;
 
-  // Icons — apple-touch-icon for iOS, manifest icons for Android/desktop.
+  // Icons: apple-touch-icon for iOS, manifest icons for Android/desktop.
   const iconHref = eff.iconDataUrl || config.icons[0]?.src || "./icons/icon.svg";
   const iconType = eff.iconDataUrl
     ? eff.iconType
@@ -130,7 +130,7 @@ export function applyPersonalisation() {
   setLink("apple-touch-icon", iconHref);
   setLink("icon", iconHref, iconType);
 
-  // Manifest — rewrite to a Blob URL so Android picks up personalised values
+  // Manifest: rewrite to a Blob URL so Android picks up personalised values
   // when the user taps "Add to Home Screen".
   const manifest = buildManifest(eff);
   const blob = new Blob([JSON.stringify(manifest)], { type: "application/manifest+json" });

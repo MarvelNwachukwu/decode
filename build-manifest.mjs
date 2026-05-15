@@ -3,7 +3,7 @@
 //   node build-manifest.mjs
 //
 // The app shell reads config.js at runtime, but the manifest is fetched by
-// browsers as a static JSON file — so it has to live on disk separately.
+// browsers as a static JSON file, so it has to live on disk separately.
 
 import { writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";

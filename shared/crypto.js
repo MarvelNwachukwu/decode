@@ -1,4 +1,4 @@
-// Standalone — no imports. So the same file can be loaded by the web app
+// Standalone: no imports. So the same file can be loaded by the web app
 // (via shared/crypto.js) and the Chrome extension (via a symlink/copy) with
 // identical behavior and no path-resolution surprises.
 const SALT_BYTES = 16;
@@ -97,7 +97,7 @@ export async function decrypt(b64, password) {
 
 // Heuristic: does this string look like our base64 payload?
 // Used by the UI to flip between encrypt/decrypt mode automatically.
-// Our ciphertext is a contiguous base64 blob — no internal whitespace, length
+// Our ciphertext is a contiguous base64 blob: no internal whitespace, length
 // divisible by 4, strict base64 alphabet. Those three together rule out almost
 // all plaintext (which tends to contain spaces, punctuation, or unicode).
 export function looksLikeCiphertext(s) {
