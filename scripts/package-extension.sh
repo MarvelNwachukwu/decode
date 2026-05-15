@@ -7,10 +7,11 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-VERSION=$(node -e "console.log(require('./extension/manifest.json').version)")
+# Asset name stays version-less so the GitHub "releases/latest/download/..."
+# URL is stable across releases. Version lives in the manifest and the tag.
 OUT_DIR="dist"
 PKG_DIR="${OUT_DIR}/extension"
-ZIP_NAME="decode-extension-v${VERSION}.zip"
+ZIP_NAME="decode-extension.zip"
 ZIP_PATH="${OUT_DIR}/${ZIP_NAME}"
 
 rm -rf "$PKG_DIR" "$ZIP_PATH"

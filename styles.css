@@ -255,12 +255,19 @@ button:disabled {
   justify-content: space-between;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 0.08em;
   font-family: var(--mono);
   text-transform: uppercase;
   padding: 8px 0 0;
+}
+
+.ftr-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .link-btn {
@@ -273,6 +280,7 @@ button:disabled {
   font: inherit;
   letter-spacing: inherit;
   text-transform: inherit;
+  text-decoration: none;
   cursor: pointer;
   border-radius: 4px;
 }
