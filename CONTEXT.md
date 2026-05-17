@@ -37,6 +37,22 @@ UI sense). Lets users right-click a text selection on any webpage and pick
 "Encrypt with Decode" or "Decrypt with Decode". Prompts for the key and
 returns the result.
 
+### URL-hash prefill
+
+Visiting a URL with a `#cipher=<base64>` hash opens the app with the message
+pre-filled and the key input focused. Used by the in-app "Share link" button,
+which generates these URLs after an encrypt. The hash is stripped via
+`history.replaceState` once read, so it doesn't linger in the address bar or
+get re-applied on refresh. Keys are never included in URLs.
+
+### Web Share Target
+
+The PWA registers as a system share target (Android, plus Chromium PWAs on
+desktop). Sharing text from any app routes it to Decode as `?text=<text>`,
+which is read at startup and treated the same as URL-hash prefill. The Web
+Share Target spec allows one target per manifest, so encrypt-vs-decrypt is
+auto-detected from the shared content's shape.
+
 ## Non-goals
 
 **Third-party LLM integration** (Claude skill, GPT plugin, MCP server hosted

@@ -22,6 +22,12 @@ const manifest = {
   theme_color: config.themeColor,
   background_color: config.backgroundColor,
   icons: config.icons,
+  share_target: {
+    action: "./",
+    method: "GET",
+    enctype: "application/x-www-form-urlencoded",
+    params: { text: "text" },
+  },
 };
 
 const out = resolve(here, "manifest.json");

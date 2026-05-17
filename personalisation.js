@@ -73,6 +73,12 @@ function buildManifest(eff) {
     theme_color: eff.themeColor,
     background_color: eff.backgroundColor,
     icons,
+    share_target: {
+      action: "./",
+      method: "GET",
+      enctype: "application/x-www-form-urlencoded",
+      params: { text: "text" },
+    },
   };
 }
 

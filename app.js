@@ -14,6 +14,7 @@ const els = {
   output: $("output"),
   outputText: $("outputText"),
   copy: $("copy"),
+  shareLink: $("shareLink"),
   clear: $("clear"),
   status: $("status"),
 };
@@ -54,11 +55,15 @@ function setStatus(msg, kind = "info") {
 function showOutput(text) {
   els.outputText.value = text;
   els.output.hidden = false;
+  // Share link only makes sense for ciphertext output. Hide for decrypt to
+  // avoid embedding plaintext in a URL.
+  els.shareLink.hidden = mode !== "encrypt";
 }
 
 function hideOutput() {
   els.output.hidden = true;
   els.outputText.value = "";
+  els.shareLink.hidden = true;
 }
 
 async function run() {
@@ -109,6 +114,22 @@ async function copyOutput() {
   }
 }
 
+async function copyShareLink() {
+  const cipher = els.outputText.value;
+  if (!cipher) return;
+  const url =
+    location.origin +
+    location.pathname +
+    "#cipher=" +
+    encodeURIComponent(cipher);
+  try {
+    await navigator.clipboard.writeText(url);
+    setStatus("Share link copied.", "ok");
+  } catch {
+    setStatus("Couldn't copy link. Use the Copy button instead.", "error");
+  }
+}
+
 function clearAll() {
   els.input.value = "";
   els.key.value = "";
@@ -130,12 +151,35 @@ function wire() {
   els.input.addEventListener("input", autoDetect);
   els.action.addEventListener("click", run);
   els.copy.addEventListener("click", copyOutput);
+  els.shareLink.addEventListener("click", copyShareLink);
   els.clear.addEventListener("click", clearAll);
   els.toggleKey.addEventListener("click", toggleKeyVisibility);
   els.modeToggle.addEventListener("click", toggleMode);
   els.key.addEventListener("keydown", (e) => {
     if (e.key === "Enter") run();
   });
+}
+
+// Two ways a message can arrive without typing: a URL like
+// /#cipher=<base64> (manually-crafted "share link"), or the Web Share Target
+// API (which always uses ?text=<base64>). Read either, prefill, then strip
+// the URL so it doesn't linger in the address bar or reload state.
+function prefillFromUrl() {
+  let payload = null;
+  if (location.hash.length > 1) {
+    const params = new URLSearchParams(location.hash.slice(1));
+    payload = params.get("cipher");
+  }
+  if (!payload && location.search.length > 1) {
+    const params = new URLSearchParams(location.search.slice(1));
+    payload = params.get("text") || params.get("cipher");
+  }
+  if (!payload) return;
+
+  els.input.value = payload;
+  autoDetect();
+  history.replaceState(null, "", location.pathname);
+  els.key.focus();
 }
 
 function registerServiceWorker() {
@@ -147,4 +191,5 @@ function registerServiceWorker() {
 applyPersonalisation();
 wire();
 setMode("encrypt");
+prefillFromUrl();
 registerServiceWorker();
