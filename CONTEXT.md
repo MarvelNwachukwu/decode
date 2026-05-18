@@ -53,6 +53,19 @@ which is read at startup and treated the same as URL-hash prefill. The Web
 Share Target spec allows one target per manifest, so encrypt-vs-decrypt is
 auto-detected from the shared content's shape.
 
+### Deploy and SW cache busting
+
+Vercel auto-deploys on push to `main`. A pre-build step
+(`scripts/cachebust-sw.mjs`, configured via `vercel.json`) rewrites the
+`CACHE` constant in `sw.js` to `decode-<git-sha>` on every deploy. That
+byte-change forces the service worker to update on existing PWA installs,
+so shell asset changes (app.js, styles.css, index.html, the shared crypto
+module, etc.) land for returning users on the next page load.
+
+Contributors don't need to bump the cache version manually. The committed
+value in `sw.js` is whatever the last local edit left it as; Vercel
+overwrites it at deploy time.
+
 ## Non-goals
 
 **Third-party LLM integration** (Claude skill, GPT plugin, MCP server hosted
