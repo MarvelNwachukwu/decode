@@ -23,6 +23,13 @@ let mode = "encrypt"; // "encrypt" | "decrypt"
 let modeLocked = false; // true once user manually toggles; Clear resets it
 let busy = false;
 
+// Privacy auto-clear. Decrypted plaintext is the sensitive payload: it shows
+// briefly, then wipes on a short countdown. Encrypted output is not sensitive,
+// so it stays until the user copies it, at which point the app wipes at once.
+// Either way we also wipe instantly when the tab is hidden or window blurred.
+const DECRYPT_CLEAR_SECONDS = 4;
+let countdownTimer = null;
+
 function setMode(next) {
   mode = next;
   for (const opt of els.modeOpts) {
@@ -43,6 +50,8 @@ function toggleMode() {
 }
 
 function autoDetect() {
+  // Editing the message means the user is back at work; stop any pending wipe.
+  cancelCountdown();
   if (modeLocked) return;
   setMode(looksLikeCiphertext(els.input.value) ? "decrypt" : "encrypt");
 }
@@ -68,6 +77,7 @@ function hideOutput() {
 
 async function run() {
   if (busy) return;
+  cancelCountdown();
   const text = els.input.value.trim();
   const password = els.key.value;
   if (!text) {
@@ -90,7 +100,12 @@ async function run() {
         ? await encrypt(text, password)
         : await decrypt(text, password);
     showOutput(result);
-    setStatus(mode === "encrypt" ? "Encrypted." : "Decrypted.", "ok");
+    if (mode === "decrypt") {
+      // Plaintext on screen: start the short wipe countdown right away.
+      startCountdown("Decrypted.", DECRYPT_CLEAR_SECONDS);
+    } else {
+      setStatus("Encrypted.", "ok");
+    }
   } catch (err) {
     hideOutput();
     setStatus(err.message || "Something went wrong.", "error");
@@ -105,12 +120,16 @@ async function copyOutput() {
   if (!text) return;
   try {
     await navigator.clipboard.writeText(text);
-    setStatus("Copied.", "ok");
   } catch {
     // Fallback for non-secure contexts
     els.outputText.select();
     document.execCommand("copy");
-    setStatus("Copied.", "ok");
+  }
+  // Encrypted output: once it's on the clipboard, wipe the app immediately.
+  // Decrypted output: leave the running countdown to finish the job.
+  if (mode === "encrypt") {
+    clearAll();
+    setStatus("Copied. Cleared for privacy.", "info");
   }
 }
 
@@ -124,13 +143,15 @@ async function copyShareLink() {
     encodeURIComponent(cipher);
   try {
     await navigator.clipboard.writeText(url);
-    setStatus("Share link copied.", "ok");
+    clearAll();
+    setStatus("Share link copied. Cleared for privacy.", "info");
   } catch {
     setStatus("Couldn't copy link. Use the Copy button instead.", "error");
   }
 }
 
 function clearAll() {
+  cancelCountdown();
   els.input.value = "";
   els.key.value = "";
   hideOutput();
@@ -138,6 +159,40 @@ function clearAll() {
   modeLocked = false;
   setMode("encrypt");
   els.input.focus();
+}
+
+function cancelCountdown() {
+  if (countdownTimer) {
+    clearInterval(countdownTimer);
+    countdownTimer = null;
+  }
+}
+
+// Start (or restart) a countdown. Ticks the status line down to zero, then
+// wipes everything.
+function startCountdown(label, seconds) {
+  cancelCountdown();
+  let remaining = seconds;
+  setStatus(`${label} Clearing in ${remaining}s for privacy.`, "ok");
+  countdownTimer = setInterval(() => {
+    remaining -= 1;
+    if (remaining <= 0) {
+      clearAll();
+      setStatus("Cleared for privacy.", "info");
+      return;
+    }
+    setStatus(`${label} Clearing in ${remaining}s for privacy.`, "ok");
+  }, 1000);
+}
+
+// Wipe immediately when the user navigates away: tab hidden, or window blurred.
+// Skip the no-op case so returning to an already-empty app isn't noisy.
+function clearOnLeave() {
+  const hasContent =
+    els.input.value || els.key.value || !els.output.hidden;
+  if (!hasContent) return;
+  clearAll();
+  setStatus("Cleared for privacy when you left the tab.", "info");
 }
 
 function toggleKeyVisibility() {
@@ -158,6 +213,12 @@ function wire() {
   els.key.addEventListener("keydown", (e) => {
     if (e.key === "Enter") run();
   });
+
+  // Wipe the instant the app is no longer in front of the user.
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) clearOnLeave();
+  });
+  window.addEventListener("blur", clearOnLeave);
 }
 
 // Two ways a message can arrive without typing: a URL like
